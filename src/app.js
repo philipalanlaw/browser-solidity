@@ -29,6 +29,7 @@ var OffsetToLineColumnConverter = require('./lib/offsetToLineColumnConverter')
 var FilePanel = require('./app/file-panel')
 var RighthandPanel = require('./app/righthand-panel')
 var examples = require('./app/example-contracts')
+var Txlistener = require('./app/txListener')
 
 // The event listener needs to be registered as early as possible, because the
 // parent will send the message upon the "load" event.
@@ -753,6 +754,7 @@ var run = function () {
           switchToFile(source)
         }
         this.statementMarker = editor.addMarker(lineColumnPos, 'highlightcode')
+        editor.scrollToLine()
         if (lineColumnPos.start.line === lineColumnPos.end.line) {
           this.fullLineMarker = editor.addMarker({
             start: {
@@ -793,6 +795,20 @@ var run = function () {
   var node = document.getElementById('staticanalysisView')
   node.insertBefore(staticanalysis.render(), node.childNodes[0])
 
+  // ----------------- Tx listener -----------------
+
+  /*
+  var txlistener = new Txlistener({
+    appAPI: {
+      web3: function () { return executionContext.web3() },
+      isVM: function () { return executionContext.isVM() }
+    },
+    appEvent: {
+      executionContext: executionContext.event,
+      udapp: udapp.event
+    }
+  })
+*/
   // ----------------- autoCompile -----------------
   var autoCompile = document.querySelector('#autoCompile').checked
   if (config.exists('autoCompile')) {

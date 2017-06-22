@@ -146,6 +146,10 @@ function Editor (editorElement) {
       }
     }
   }
+  
+  this.scrollToLine = function () {
+    console.log('test')
+  }
 
   this.addMarker = function (lineColumnPos, cssClass) {
     var currentRange = new Range(lineColumnPos.start.line, lineColumnPos.start.column, lineColumnPos.end.line, lineColumnPos.end.column)
