@@ -29,6 +29,7 @@ var OffsetToLineColumnConverter = require('./lib/offsetToLineColumnConverter')
 var FilePanel = require('./app/file-panel')
 var RighthandPanel = require('./app/righthand-panel')
 var examples = require('./app/example-contracts')
+var modalDialogAlert = require('./app/modal-dialog-alert')
 
 // The event listener needs to be registered as early as possible, because the
 // parent will send the message upon the "load" event.
@@ -643,6 +644,9 @@ var run = function () {
   function onResize () {
     editor.resize(document.querySelector('#editorWrap').checked)
     reAdjust()
+
+    var rhpEvents_str = JSON.stringify(rhpEvents, null, 2)
+    modalDialogAlert('This is the h2 of the alert!', 'This is the content area - it would be good to print out something here that is pretty long for example: ' + rhpEvents_str)
   }
   window.onresize = onResize
   onResize()
