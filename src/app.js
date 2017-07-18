@@ -586,75 +586,6 @@ function run () {
     startdebugging(txResult.transactionHash)
   })
 
-  function swarmVerifiedPublish (content, expectedHash, cb) {
-    swarmgw.put(content, function (err, ret) {
-      if (err) {
-        cb(err)
-      } else if (ret !== expectedHash) {
-        cb('Hash mismatch')
-      } else {
-        cb()
-      }
-    })
-  }
-
-  function publishOnSwarm (contract, cb) {
-    // gather list of files to publish
-    var sources = []
-
-    sources.push({
-      content: contract.metadata,
-      hash: contract.metadataHash
-    })
-
-    var metadata
-    try {
-      metadata = JSON.parse(contract.metadata)
-    } catch (e) {
-      return cb(e)
-    }
-
-    if (metadata === undefined) {
-      return cb('No metadata')
-    }
-
-    async.eachSeries(Object.keys(metadata.sources), function (fileName, cb) {
-      // find hash
-      var hash
-      try {
-        hash = metadata.sources[fileName].urls[0].match('bzzr://(.+)')[1]
-      } catch (e) {
-        return cb('Metadata inconsistency')
-      }
-
-      fileProviderOf(fileName).get(fileName, (error, content) => {
-        if (error) {
-          console.log(error)
-        } else {
-          sources.push({
-            content: content,
-            hash: hash
-          })
-        }
-        cb()
-      })
-    }, function () {
-      // publish the list of sources in order, fail if any failed
-      async.eachSeries(sources, function (item, cb) {
-        swarmVerifiedPublish(item.content, item.hash, cb)
-      }, cb)
-    })
-  }
-
-  udapp.event.register('publishContract', this, function (contract) {
-    publishOnSwarm(contract, function (err) {
-      if (err) {
-        alert('Failed to publish metadata: ' + err)
-      } else {
-        alert('Metadata published successfully')
-      }
-    })
-  })
 
   // ---------------- Righthand-panel --------------------
   var rhpAPI = {
@@ -684,6 +615,12 @@ function run () {
     },
     executionContext: () => {
       return executionContext
+    },
+    fileProviderOf: (path) => {
+      return fileProviderOf(path)
+    },
+    swarmVerifiedPublish: (content, expectedHash, cb) => {
+      return swarmVerifiedPublish (content, expectedHash, cb)
     }
   }
   var rhpEvents = {
