@@ -126,24 +126,24 @@ var formatGasEstimates = function (data) {
     return g === null ? 'unknown' : g
   }
 
-  var text = ''
+  var ret = {}
   var fun
   if ('creation' in data) {
-    text += 'Creation: ' + gasToText(data.creation[0]) + ' + ' + gasToText(data.creation[1]) + '\n'
+    ret['Creation'] = gasToText(data.creation[0]) + ' + ' + gasToText(data.creation[1]) + '\n'
   }
 
   if ('external' in data) {
-    text += 'External:\n'
+    ret['External'] = {}
     for (fun in data.external) {
-      text += '  ' + fun + ': ' + gasToText(data.external[fun]) + '\n'
+      ret['External'][fun] = gasToText(data.external[fun])
     }
   }
 
   if ('internal' in data) {
-    text += 'Internal:\n'
+    ret['Internal'] = {}
     for (fun in data.internal) {
-      text += '  ' + fun + ': ' + gasToText(data.internal[fun]) + '\n'
+      ret['Internal'][fun] = gasToText(data.internal[fun])
     }
   }
-  return text
+  return ret
 }
