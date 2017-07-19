@@ -583,6 +583,9 @@ function run () {
           callback(null, executionContext.web3().fromWei(balance, 'ether'))
         }
       })
+    },
+    compilationMessage: (message, container, options) => {
+      renderer.error(message, container, options)
     }
   }
   var rhpEvents = {
