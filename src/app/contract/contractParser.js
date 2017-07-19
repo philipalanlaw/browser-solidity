@@ -3,10 +3,8 @@
 var $ = require('jquery')
 var txHelper = require('../execution/txHelper')
 
-module.exports = {
-  parseContracts: (contractName, contract, compiledSource) => {
-    return getDetails(contractName, contract, compiledSource)
-  }
+module.exports = (contractName, contract, compiledSource) => {
+  return getDetails(contractName, contract, compiledSource)
 }
 
 var getDetails = function (contractName, contract, source) {
