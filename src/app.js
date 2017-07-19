@@ -586,6 +586,12 @@ function run () {
     },
     compilationMessage: (message, container, options) => {
       renderer.error(message, container, options)
+    },
+    currentCompiledSourceCode: () => {
+      if (compiler.lastCompilationResult.source) {
+        return compiler.lastCompilationResult.source.sources[compiler.lastCompilationResult.source.target]
+      }
+      return ''
     }
   }
   var rhpEvents = {
